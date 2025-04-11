@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cadastro</title>
+</head>
+<header>
+    <h1>cadastro de funcionários</h1>
+</header>
+<main>
+    <form >
+        <label for="nome">Nome completo:</label>
+        <input type="text"  name="nome" required pattern="^[a-Za-zÁ-u\s]{3,15}$" title="o nome deve conter no minimo 3 letras" ><br><br>
+        
+        <label for="cpf">cpf:</label>
+        <input type="text" name="cpf"  required pattern="[0-9]{3}.[0-9]{3}-[0-9]{2}" title="o cpf deve estar no formato 000.000.000-00"><br><br>
+      
+        <label for="email">email:</label>
+        <input type="email"  name="email" required title="digite um email válido" pattern="^[a-zA-Z0-9._%+-]+@[a-za-z0-9]+.[a-zA]{2,}"><br><br>
+      
+        <label for="tel">telefone:</label>
+        <input type="tel" name="telefone" id="">
+        type="submit">Enviar</button>
+    </form>
+</main>
+
+<body>
+</body>
+
+</html>
