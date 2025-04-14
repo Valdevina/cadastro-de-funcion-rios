@@ -55,18 +55,20 @@ function listarFuncionarios() {
         return;
     }
 
-    let transaction = db.transaction("funcionarios", "readonly");
+    let transaction = db.transaction("funcionarios", "readonly"); // Só faz a leitura dos funcionáioe
     let store = transaction.objectStore("funcionarios");
 
-    let listaFuncionarios = document.querySelector(".your_dates");
+    let listaFuncionarios = document.querySelector(".your_dates"); // Exibir lista de funcionários no html
     listaFuncionarios.innerHTML = ""; // Limpa antes de exibir
     
-    let cursorRequest = store.openCursor();
-    cursorRequest.onsuccess = function (event) {
-        let cursor = event.target.result;
-        if (cursor) {
-            let funcionario = cursor.value;
-            listaFuncionarios.innerHTML += `<p>ID: ${funcionario.id} - Nome: ${funcionario.nome} - CPF: ${funcionario.cpf}</p>`;
+    let cursorRequest = store.openCursor(); // É o jeito que o indexedDB usa para percorrer todos os registros dentro da store "funcionários"
+    cursorRequest.onsuccess = function (event) { // Lista executada com sucesso
+        let cursor = event.target.result; // o cursor aponta para cada registro
+        if (cursor) { // Se o registro existir o cursor busca os valores do funcionário
+            let funcionario = cursor.value; // o cursor busca informações (valores)do funcionário
+            listaFuncionarios.innerHTML += `<p>ID: ${funcionario.id} - Nome: ${funcionario.nome} - CPF: ${funcionario.cpf}
+             - email: ${funcionario.email} - telefone: ${funcionario.telefone} - Cargo: ${funcionario.cargo} - data de nascimento:${funcionario.data_nascimento}</p>`;
+            
             cursor.continue();
         } else {
             mostrarFeedback("Lista de funcionários carregada com sucesso!", "success");
@@ -74,7 +76,7 @@ function listarFuncionarios() {
     };
 
     cursorRequest.onerror = function (event) {
-        console.error("Erro ao listar funcionários:", event.target.error);
+        console.error("Erro ao listar funcionários:", event.target.error); // erro ao lista funcionários
         mostrarFeedback("Erro ao listar funcionários!", "error");
     };
 }
@@ -82,20 +84,20 @@ function listarFuncionarios() {
 
 // Função para adicionar um funcionário com feedback visual
 function adicionarFuncionario(funcionario) {
-    let db = verificarDB();
-    if (!db) return;
+    let db = verificarDB(); // chama função verificar
+    if (!db) return; // se  estiver vazio sai da função
 
-    let transaction = db.transaction("funcionarios", "readwrite");
-    let store = transaction.objectStore("funcionarios");
+    let transaction = db.transaction("funcionarios", "readwrite"); // Cria transação para o objeto funcionar e permite gerir(ler,atualizar,deleta e criar) os dados ou "redwrite"
+    let store = transaction.objectStore("funcionarios"); // Referência direta  de onde os dados serão armazenados
     
-    let addRequest = store.add(funcionario);
-    addRequest.onsuccess = function () {
-        console.log("Funcionário adicionado com sucesso!");
+    let addRequest = store.add(funcionario); // Adicionando funcionários na store
+    addRequest.onsuccess = function () { //adicionado com sucesso (os funcionários)
+        console.log("Funcionário adicionado com sucesso!"); 
         mostrarFeedback("Funcionário cadastrado com sucesso!", "success"); // Mostra feedback visual
-        listarFuncionarios();
-    };
+        listarFuncionarios(); // chama a função
+    }
 
-    addRequest.onerror = function (event) {
+    addRequest.onerror = function (event) { //  Erro ao adicionar Funcionário
         console.error("Erro ao adicionar funcionário:", event.target.error);
         mostrarFeedback("Erro ao cadastrar funcionário!", "error"); // Exibe erro na interface
     };
