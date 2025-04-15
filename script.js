@@ -105,33 +105,33 @@ function adicionarFuncionario(funcionario) {
 
 
 // Função para atualizar um funcionário com feedback visual
-function atualizarFuncionario(id, novosDados) {
+function atualizarFuncionario(id, novosDados) { // O id é pra informar registro de funcionário e o novosDados para alterar informação desejada
     let db = verificarDB();
     if (!db) return;
 
-    let transaction = db.transaction("funcionarios", "readwrite");
+    let transaction = db.transaction("funcionarios", "readwrite"); 
     let store = transaction.objectStore("funcionarios");
 
-    let getRequest = store.get(id);
-    getRequest.onsuccess = function () {
+    let getRequest = store.get(id); // pega o id do funcionário do banco de dados
+    getRequest.onsuccess = function () {// Obteve sucesso ao achar a id do funcionário
         let funcionario = getRequest.result;
         if (funcionario) {
             Object.assign(funcionario, novosDados); // Atualiza os dados do funcionário
-            let updateRequest = store.put(funcionario);
-            updateRequest.onsuccess = function () {
+            let updateRequest = store.put(funcionario); // alterar os dados do funcionário
+            updateRequest.onsuccess = function () { 
                 console.log("Funcionário atualizado com sucesso!");
                 mostrarFeedback("Dados atualizados com sucesso!", "success"); // Mostra feedback visual
                 listarFuncionarios();
             };
 
-            updateRequest.onerror = function (event) {
+            updateRequest.onerror = function (event) { // Alteração não realizado
                 console.error("Erro ao atualizar funcionário:", event.target.error);
                 mostrarFeedback("Erro ao atualizar funcionário!", "error"); // Exibe erro na interface
             };
         }
     };
 
-    getRequest.onerror = function (event) {
+    getRequest.onerror = function (event) { //Alteração não realizado 
         console.error("Erro ao obter funcionário para atualização:", event.target.error);
         mostrarFeedback("Erro ao carregar funcionário para atualização!", "error"); // Feedback visual
     };
